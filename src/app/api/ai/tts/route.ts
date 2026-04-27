@@ -32,7 +32,9 @@ export async function POST(request: Request) {
         throw new Error("No audio content returned from Google Cloud");
     }
 
-    return new NextResponse(response.audioContent as Uint8Array, {
+    const audioBuffer = Buffer.from(response.audioContent as Uint8Array);
+
+    return new NextResponse(audioBuffer, {
       status: 200,
       headers: {
         "Content-Type": "audio/mpeg",
