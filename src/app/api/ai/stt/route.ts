@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 import { SpeechClient } from "@google-cloud/speech";
 
-// El cliente tomará automáticamente las credenciales si están en process.env.GOOGLE_APPLICATION_CREDENTIALS
-// que debe apuntar al archivo JSON de cuenta de servicio de Google Cloud.
-const speechClient = new SpeechClient();
+// El cliente tomará automáticamente las credenciales de GOOGLE_CREDENTIALS_JSON (si pasas el JSON crudo en env)
+// o de GOOGLE_APPLICATION_CREDENTIALS (si usas un archivo)
+const speechClient = new SpeechClient(
+  process.env.GOOGLE_CREDENTIALS_JSON
+    ? { credentials: JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON) }
+    : undefined
+);
 
 export async function POST(request: Request) {
   try {

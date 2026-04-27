@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import textToSpeech from "@google-cloud/text-to-speech";
 
-// El cliente tomará automáticamente las credenciales de process.env.GOOGLE_APPLICATION_CREDENTIALS
-const ttsClient = new textToSpeech.TextToSpeechClient();
+// El cliente tomará automáticamente las credenciales de GOOGLE_CREDENTIALS_JSON o GOOGLE_APPLICATION_CREDENTIALS
+const ttsClient = new textToSpeech.TextToSpeechClient(
+  process.env.GOOGLE_CREDENTIALS_JSON
+    ? { credentials: JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON) }
+    : undefined
+);
 
 export async function POST(request: Request) {
   try {
